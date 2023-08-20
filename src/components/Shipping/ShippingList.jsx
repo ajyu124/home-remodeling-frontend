@@ -12,6 +12,13 @@ import Paper from '@mui/material/Paper';
 
 import { apiUrl } from '../../constants';
 
+
+
+import InventoryIcon from '@mui/icons-material/Inventory';
+
+//import FormWithApiCall from './FormWithApiCall';
+
+
 function ShippingList() {
   const [ shippingListData, setShippingListData ] = useState({});
   const navigate = useNavigate();
@@ -26,6 +33,10 @@ function ShippingList() {
         console.error('Error:', error);
       });
   }, []); // run only once
+
+  const handleItemClick = (shipping_id) => {
+    navigate(`/shipping-detail/${shipping_id}`);
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -47,6 +58,7 @@ function ShippingList() {
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              onClick={() => handleItemClick(row.id)}
             >
               <TableCell>{row.product_detail_name}</TableCell>
               <TableCell>{row.street_address}</TableCell>

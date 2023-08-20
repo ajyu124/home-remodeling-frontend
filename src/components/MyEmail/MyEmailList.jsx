@@ -29,6 +29,10 @@ function MyEmailList() {
       });
   }, []); // run only once
 
+  const handleItemClick = (email_id) => {
+    navigate(`/email-detail/${email_id}`);
+  };
+
   return (
     <Box>
       <Box sx={{ padding: 2 }}>
@@ -57,7 +61,8 @@ function MyEmailList() {
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
+                onClick={() => handleItemClick(row.id)}
+                >
                 <TableCell>{row.recipient}</TableCell>
                 <TableCell>{row.subject}</TableCell>
                 <TableCell>{row.body}</TableCell>
