@@ -19,6 +19,9 @@ const TopNavigation = () => {
             <Link to="/shipping_list">Shipping</Link>
           </li>
           <li>
+            <Link to="/inventory_list">Inventory</Link>
+          </li>
+          <li>
             <Link to="/my_email_list">Email</Link>
           </li>
 					<li>
