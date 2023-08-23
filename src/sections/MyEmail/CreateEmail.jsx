@@ -20,9 +20,6 @@ function CreateEmail({ data }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // URL of API endpoint
-    const createApiUrl = `${apiUrl}/api/my_emails/create/`;
-
     // payload to be sent to the API
     const payload = {
       recipient: recipient,
@@ -31,7 +28,7 @@ function CreateEmail({ data }) {
     };
 
     // Making the API call using fetch
-    fetch(createApiUrl, {
+    fetch(`${apiUrl}/api/my_email/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,11 +38,11 @@ function CreateEmail({ data }) {
       .then((response) => response.json())
       .then((apiResponse) => {
         console.log("API response:", apiResponse);
-        navigate('/my_email_list');
+        navigate('/email/email_list');
       })
       .catch((error) => {
         console.log(error);
-        navigate('/my_email_list');
+        navigate('/email/email_list');
       });
   };
 

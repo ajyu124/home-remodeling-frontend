@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
-import { apiUrl, imageUrl } from '../../constants';
+import { apiUrl } from '../../constants';
 
-function ProductDetail({ data }) {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+function CreateShipping() {
+  const [productListData, setProductListData] = useState([]);
 
+  const [productDetail, setProductDetail] = useState('')
   const [streetAddress, setStreetAddress] = useState('');
   const [city, setCity] = useState('');
   const [addressState, setAddressState] = useState('');
@@ -17,15 +21,24 @@ function ProductDetail({ data }) {
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
 
+  useEffect(() => {
+    fetch(`${apiUrl}/api/product/read_list/`)
+        .then(response => response.json())
+        .then(data => {
+          setProductListData(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+  }, []); // run only once
+
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // URL of API endpoint
-    const createApiUrl = `${apiUrl}/api/shippings/create/`;
-
-    // payload to be sent to the API
     const payload = {
-      product_detail: data.id,
+      product_detail: productDetail,
       street_address: streetAddress,
       city: city,
       state: addressState,
@@ -35,7 +48,7 @@ function ProductDetail({ data }) {
     };
 
     // Making the API call using fetch
-    fetch(createApiUrl, {
+    fetch(`${apiUrl}/api/shipping/create/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,83 +58,97 @@ function ProductDetail({ data }) {
       .then((response) => response.json())
       .then((apiResponse) => {
         console.log("API response:", apiResponse);
-        setIsDrawerOpen(false);
-        setStreetAddress('');
+        navigate('/shipping/shipping_list');
       })
+      .catch((error) => {
+        console.log(error);
+        navigate('/shipping/shipping_list');
+      });
   };
 
-  // toggleDrawer(true/false) returns a function, not a value.
-  const toggleDrawer = (open) => {
-    // return a event handler function that remembers "open"
-    return (event) => {
-      setIsDrawerOpen(open);
-    };
-  }
+  const handleProductChange = (event) => {
+    setProductDetail(event.target.value);
+  };
 
-  const renderForm = () => (
-    <Box
-      sx={{ width: 500 }}
-      role="presentation"
-    >
+  return (
+    <Box>
       <Box sx={{ paddingTop: 2 }}>
         <form onSubmit={handleSubmit}>
+
           <Box sx={{ padding: 2 }}>
-            <Typography variant='h5'>
-              {data.name}
-            </Typography>
+            <InputLabel id="select-product-labelId">Select a Product</InputLabel>
+            <Select
+              labelId="select-product-labelId"
+              value={productDetail}
+              onChange={handleProductChange}
+              fullWidth
+              size="small"
+            > 
+              {
+                productListData.map(({id, name}) => (
+                  <MenuItem value={id} key={`product_${id}`}>{name}</MenuItem>
+                ))
+              }
+            </Select>
           </Box>
 
           <Box sx={{ padding: 2 }}>
             <TextField 
               label="Street Address"
+              fullWidth   // Take up full width
               onChange={(e) => setStreetAddress(e.target.value)}
               value={streetAddress}
-              fullWidth
+              size="small"  // Set the size to "small"
             />
           </Box>
 
           <Box sx={{ padding: 2 }}>
             <TextField 
               label="City"
+              fullWidth   // Take up full width
               onChange={(e) => setCity(e.target.value)}
               value={city}
-              fullWidth
+              size="small"  // Set the size to "small"
             />
           </Box>
 
           <Box sx={{ padding: 2 }}>
             <TextField 
               label="State"
+              fullWidth   // Take up full width
               onChange={(e) => setAddressState(e.target.value)}
               value={addressState}
-              fullWidth
+              size="small"  // Set the size to "small"
             />
           </Box>
 
           <Box sx={{ padding: 2 }}>
             <TextField 
-              label="Zipcode"
+              label="Zip Code"
+              fullWidth   // Take up full width
               onChange={(e) => setZipcode(e.target.value)}
               value={zipcode}
-              fullWidth
+              size="small"  // Set the size to "small"
             />
           </Box>
 
           <Box sx={{ padding: 2 }}>
             <TextField 
-              label="CustomerName"
+              label="Customer Name"
+              fullWidth   // Take up full width
               onChange={(e) => setCustomerName(e.target.value)}
               value={customerName}
-              fullWidth
+              size="small"  // Set the size to "small"
             />
           </Box>
 
           <Box sx={{ padding: 2 }}>
             <TextField 
-              label="CustomerEmail"
+              label="Customer Email"
+              fullWidth   // Take up full width
               onChange={(e) => setCustomerEmail(e.target.value)}
               value={customerEmail}
-              fullWidth
+              size="small"  // Set the size to "small"
             />
           </Box>
 
@@ -130,58 +157,23 @@ function ProductDetail({ data }) {
               variant="contained"
               type="submit"
               disabled = {
-                streetAddress === '' 
+                productDetail === ''
+                || streetAddress === '' 
                 || city === '' 
-                || addressState === '' 
-                || zipcode === '' 
-                || customerName === '' 
+                || addressState === ''
+                || zipcode === ''
+                || customerName === ''
                 || customerEmail === ''
               }
             >
-              Ship
+              Create Shipping
             </Button>
           </Box>
+
         </form>
       </Box>
     </Box>
   );
-
-  return (
-    <Box>
-      <Box sx={{ mb: 10 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Box>
-            <Typography variant='h5'>
-              {data.name}
-            </Typography>
-          </Box>
-          <Box sx={{ marginLeft: '20px' }}>
-            <Button 
-              variant="contained"
-              onClick={toggleDrawer(true)} // toggleDrawer(true) returns a function that remembers "open" as true
-            >
-              Ship
-            </Button>
-          </Box>
-        </Box>
-
-        <Box sx={{ mt: 2 }}>
-          <img src={imageUrl + '/product/' + data.image_name}  
-            height="300"
-            alt={data.name} />
-        </Box>
-      </Box>
-
-      <Drawer
-        anchor='right'
-        open={isDrawerOpen}
-        onClose={toggleDrawer(false)}  // toggleDrawer(false) returns a function that remembers "open" as false
-      >
-        {renderForm()}
-      </Drawer>
-
-    </Box>
-  );
 }
 
-export default ProductDetail;
+export default CreateShipping;

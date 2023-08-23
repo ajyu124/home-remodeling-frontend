@@ -35,3 +35,9 @@
 .theme:hover {
 	cursor: pointer;
 }
+
+
+/* for the active link */
+.active {
+  color: #ff0000;
+}

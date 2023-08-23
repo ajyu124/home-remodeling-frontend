@@ -11,53 +11,75 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+
 import { apiUrl } from '../../constants';
 import { Box } from '@mui/material';
 
-function MyEmailList() {
-  const [ myEmailListData, setMyEmailListData ] = useState({});
+function EmailList() {
+  const [ emailListData, setEmailListData ] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`${apiUrl}/api/my_emails/`)
+    fetch(`${apiUrl}/api/my_email/read_list/?search=${searchTerm}`)
       .then(response => response.json())
       .then(data => {
-        setMyEmailListData(data);
+        setEmailListData(data);
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }, []); // run only once
+  }, [searchTerm]);
 
-  const handleItemClick = (email_id) => {
-    navigate(`/email-detail/${email_id}`);
+  const handleItemClick = (id) => {
+    navigate(`/email/email-detail/${id}`);
   };
 
   return (
     <Box>
-      <Box sx={{ padding: 2 }}>
-        <Button 
-          variant="outlined"
-          onClick={()=>{
-            navigate('/create_email');
-          }}
-          >
-          Create New Email
-        </Button>
+      <Box sx={{ padding: 2, display: 'flex', flexDirection: 'row' }}>
+        <Box>
+          <Button 
+            variant="outlined"
+            onClick={()=>{
+              navigate('/email/create_email');
+            }}
+            >
+            Create Email
+          </Button>
+        </Box>
+        <Box sx={{ ml: 5 }}>
+          <TextField
+            label="Search"
+            variant="outlined"
+            value={searchTerm}
+            onChange={(event) => {
+              setSearchTerm(event.target.value);
+            }}
+            size="small"
+          />
+          <IconButton aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        </Box>
       </Box>
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Recipient</TableCell>
-              <TableCell>Subject</TableCell>
-              <TableCell>Body</TableCell>
-              <TableCell>Sent at</TableCell>
+              <TableCell><b>Recipient</b></TableCell>
+              <TableCell><b>Subject</b></TableCell>
+              <TableCell><b>Body</b></TableCell>
+              <TableCell><b>Sent at</b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {map(myEmailListData, (row) => (
+            {map(emailListData, (row) => (
               <TableRow
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -76,4 +98,4 @@ function MyEmailList() {
   );
 }
 
-export default MyEmailList;
+export default EmailList;
