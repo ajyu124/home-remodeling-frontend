@@ -7,7 +7,7 @@ a demo website for Home Remodeling Business.
 This front-end application requires the corresponding backend application to be running first:
 [https://github.com/ajyu124/homeRemodelingBackend](https://github.com/ajyu124/homeRemodelingBackend)
 
-[video of the demo website]()
+[Video demonstration of the website](https://youtu.be/fdcxK87FEHM)
 
 To run the application in the development mode, 
 in the project directory:
