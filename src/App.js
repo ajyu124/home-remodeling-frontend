@@ -5,21 +5,23 @@ import Layout from './sections/Layout/Layout';
 import Home from './sections/Home';
 
 import InventoryList from './sections/Inventory/InventoryList';
-import InventoryDetail from "./sections/Inventory/InventoryDetail";
-import CreateInventory from "./sections/Inventory/CreateInventory";
-import EditInventory from "./sections/Inventory/EditInventory";
+import InventoryDetail from './sections/Inventory/InventoryDetail';
+import CreateInventory from './sections/Inventory/CreateInventory';
+import EditInventory from './sections/Inventory/EditInventory';
 
 import ProductList from './sections/Product/ProductList';
-import EditProduct from "./sections/Product/EditProduct";
+import ProductDetail from './sections/Product/ProductDetail';
+import EditProduct from './sections/Product/EditProduct';
+import CreateProduct from './sections/Product/CreateProduct';
 
 import ShippingList from './sections/Shipping/ShippingList';
 import ShippingDetail from './sections/Shipping/ShippingDetail';
-import EditShipping from "./sections/Shipping/EditShipping";
-import CreateShipping from "./sections/Shipping/CreateShipping";
+import EditShipping from './sections/Shipping/EditShipping';
+import CreateShipping from './sections/Shipping/CreateShipping';
 
-import EmailList from "./sections/MyEmail/EmailList";
-import EmailDetail from "./sections/MyEmail/EmailDetail";
-import CreateEmail from "./sections/MyEmail/CreateEmail";
+import EmailList from './sections/MyEmail/EmailList';
+import EmailDetail from './sections/MyEmail/EmailDetail';
+import CreateEmail from './sections/MyEmail/CreateEmail';
 
 import About from './sections/About';
 
@@ -36,7 +38,9 @@ function App() {
           <Route path="/inventory/edit_inventory/:inventory_id" element={<EditInventory />} />
           
           <Route path="/product/product_list" element={<ProductList />} />
+          <Route path="/product/product-detail/:product_id" element={<ProductDetail />} />
           <Route path="/product/edit_product/:product_id" element={<EditProduct />} />
+          <Route path="/product/create_product" element={<CreateProduct />} />
 
           <Route path="/shipping/shipping_list" element={<ShippingList />} />
           <Route path="/shipping/shipping-detail/:shipping_id" element={<ShippingDetail />} />

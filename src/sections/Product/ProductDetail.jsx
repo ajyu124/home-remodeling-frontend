@@ -1,197 +1,100 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
+
+
+
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { apiUrl } from '../../constants';
+import ConfirmationDialog from '../../components/dialogs/ConfirmationDialog';
 
-import { apiUrl, imageUrl } from '../../constants';
+function ProductDetail() {
+  const { product_id } = useParams();
 
-function ProductDetail({ data }) {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [productData, setProductData] = useState({});
+  const navigate = useNavigate();
 
-  const [streetAddress, setStreetAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [addressState, setAddressState] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [customerName, setCustomerName] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
-
-  const navigate = useNavigate()
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // payload to be sent to the API
-    const payload = {
-      product_detail: data.id,
-      street_address: streetAddress,
-      city: city,
-      state: addressState,
-      zipcode: zipcode,
-      customer_name: customerName,
-      customer_email: customerEmail,
-    };
-
-    // Making the API call using fetch
-    fetch(`${apiUrl}/api/shipping/create/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((apiResponse) => {
-        console.log("API response:", apiResponse);
-        setIsDrawerOpen(false);
-        navigate('/shipping/shipping_list')
+  useEffect(() => {
+    fetch(`${apiUrl}/api/product/read/${product_id}/`)
+      .then(response => response.json())
+      .then(data => {
+        setProductData(data);
       })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, [product_id]);
+
+
+  const [isConfirmationOpen, setConfirmationOpen] = useState(false);
+  const handleConfirm = () => {
+    fetch(`${apiUrl}/api/product/delete/${product_id}/`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        navigate('/product/product_list');
+        setConfirmationOpen(false);
+      });
   };
-
-  // toggleDrawer(true/false) returns a function, not a value.
-  const toggleDrawer = (open) => {
-    // return a event handler function that remembers "open"
-    return (event) => {
-      setIsDrawerOpen(open);
-    };
-  }
-
-  const renderForm = () => (
-    <Box
-      sx={{ width: 500 }}
-      role="presentation"
-    >
-      <Box sx={{ paddingTop: 2 }}>
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ padding: 2 }}>
-            <Typography variant='h5'>
-              {data.name}
-            </Typography>
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Street Address"
-              onChange={(e) => setStreetAddress(e.target.value)}
-              value={streetAddress}
-              fullWidth
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="City"
-              onChange={(e) => setCity(e.target.value)}
-              value={city}
-              fullWidth
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="State"
-              onChange={(e) => setAddressState(e.target.value)}
-              value={addressState}
-              fullWidth
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Zip Code"
-              onChange={(e) => setZipcode(e.target.value)}
-              value={zipcode}
-              fullWidth
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Customer Name"
-              onChange={(e) => setCustomerName(e.target.value)}
-              value={customerName}
-              fullWidth
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Customer Email"
-              onChange={(e) => setCustomerEmail(e.target.value)}
-              value={customerEmail}
-              fullWidth
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <Button 
-              variant="contained"
-              type="submit"
-              disabled = {
-                streetAddress === '' 
-                || city === '' 
-                || addressState === '' 
-                || zipcode === '' 
-                || customerName === '' 
-                || customerEmail === ''
-              }
-            >
-              Ship
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    </Box>
-  );
+  const handleClose = () => {
+    setConfirmationOpen(false);
+  };
+  
+  const imageSrcUrl = `${apiUrl}/api/images/${productData.image_name}`;
 
   return (
-    <Box>
-      <Box sx={{ mb: 10 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Box>
-            <Typography variant='h5'>
-              {data.name}
-            </Typography>
-          </Box>
-
-          <Box sx={{ marginLeft: '20px' }}>
-            <Button 
-              variant="outlined"
-              onClick={() => {
-                navigate(`/product/edit_product/${data.id}`);
-              }}
-            >
-              Edit
-            </Button>
-          </Box>
-
-          <Box sx={{ marginLeft: '20px' }}>
-            <Button 
-              variant="contained"
-              onClick={toggleDrawer(true)} // toggleDrawer(true) returns a function that remembers "open" as true
-            >
-              Ship
-            </Button>
-          </Box>
-        </Box>
-
-        <Box sx={{ mt: 2 }}>
-          <img src={imageUrl + '/product/' + data.image_name}  
-            height="300"
-            alt={data.name} />
-        </Box>
+    <Box sx={{ pr: 5, pl: 2 }}>
+      <Box sx={{mt: 2, mb: 3}}>
+        <Typography variant="h6" gutterBottom>
+          Product Detail
+        </Typography>
       </Box>
 
-      <Drawer
-        anchor='right'
-        open={isDrawerOpen}
-        onClose={toggleDrawer(false)}  // toggleDrawer(false) returns a function that remembers "open" as false
-      >
-        {renderForm()}
-      </Drawer>
+      <Box sx={{mt: 2}}>
+        <Typography>
+          <strong>Name: </strong>
+          {productData.name}
+        </Typography>
+      </Box>
 
+      <Box sx={{ mt: 2, mb: 3 }}>
+        <img src={imageSrcUrl}  
+          height="300"
+          alt={productData.name} />
+      </Box>
+
+      <Box sx={{mt: 5, display: 'flex', flexDirection: 'row'}}>
+        <Box>
+          <Button 
+            variant="outlined"
+            onClick={() => {
+              navigate(`/product/edit_product/${product_id}`);
+            }}
+          >
+            Edit
+          </Button>
+        </Box>
+        <Box sx={{ marginLeft: '20px' }}>
+          <Button 
+            variant="outlined"
+            onClick={()=>{
+              setConfirmationOpen(true);
+            }}
+          >
+            Delete
+          </Button>
+
+          <ConfirmationDialog
+            open={isConfirmationOpen}
+            onClose={handleClose}
+            onConfirm={handleConfirm}
+          />
+        </Box>
+      </Box>
     </Box>
   );
 }

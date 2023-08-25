@@ -4,13 +4,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-import { apiUrl, imageUrl } from '../../constants';
+import { apiUrl } from '../../constants';
+import UploadImageComponent from '../../components/UploadImage';
 
 function EditProduct() {
   const { product_id } = useParams();
 
-  // const [item, setItem] = useState('');
   const [name, setName] = useState('');
   const [imageName, setImageName] = useState('');
 
@@ -31,12 +32,11 @@ function EditProduct() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // payload to be sent to the API
     const payload = {
       name: name,
+      image_name: imageName,
     };
 
-    // Making the API call using fetch
     fetch(`${apiUrl}/api/product/update/${product_id}/`, {
       method: "PUT",
       headers: {
@@ -55,38 +55,43 @@ function EditProduct() {
   };
 
   return (
-    <Box>
-      <Box sx={{ paddingTop: 2 }}>
-        <form onSubmit={handleSubmit}>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Name"
-              fullWidth   // Take up full width
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-            />
-          </Box>
-
-          <Box sx={{ mt: 2, ml: 2 }}>
-            <img src={imageUrl + '/product/' + imageName}  
-              height="300"
-              alt={name} />
-          </Box>
-
-          <Box sx={{ mt: 5, padding: 2 }}>
-            <Button 
-              variant="contained"
-              type="submit"
-              disabled = {
-                name === '' 
-              }
-            >
-              Update Product
-            </Button>
-          </Box>
-        </form>
+    <Box sx={{ pr: 5, pl: 2 }}>
+      <Box sx={{mt: 2, mb: 3}}>
+        <Typography variant="h6" gutterBottom>
+          Product Detail
+        </Typography>
       </Box>
+
+      <form onSubmit={handleSubmit}>
+
+        <Box sx={{ pb: 5 }}>
+          <TextField 
+            label="Name"
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pb: 2 }}>
+          <UploadImageComponent setImageName={setImageName} imageName={imageName} />
+        </Box>
+
+        <Box>
+          <Button 
+            variant="contained"
+            type="submit"
+            disabled = {
+              name === '' 
+              || imageName === ''
+            }
+          >
+            Update
+          </Button>
+        </Box>
+
+      </form>
     </Box>
   );
 }

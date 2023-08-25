@@ -42,41 +42,41 @@ function InventoryDetail() {
 
   return (
     <Box>
-      <Box sx={{mt: 2, mb: 3}}>
+      <Box sx={{pb: 3}}>
         <Typography variant="h6" gutterBottom>
           Inventory Detail
         </Typography>
       </Box>
 
-      <Box sx={{mt: 2}}>
+      <Box sx={{pb: 3}}>
         <Typography>
           <strong>Category: </strong> 
           {inventoryData.category_description}
         </Typography>
       </Box>
 
-      <Box sx={{mt: 2}}>
+      <Box sx={{pb: 3}}>
         <Typography>
           <strong>Item: </strong>
           {inventoryData.item}
         </Typography>
       </Box>
 
-      <Box sx={{mt: 2}}>
+      <Box sx={{pb: 3}}>
         <Typography>
           <strong>Quantity: </strong>
           {inventoryData.quantity}
         </Typography>
       </Box>
 
-      <Box sx={{mt: 2}}>
+      <Box sx={{pb: 3}}>
         <Typography>
           <strong>Price per Unit: </strong>
           {inventoryData.price_per_unit}
         </Typography>
       </Box>
 
-      <Box sx={{mt: 5, display: 'flex', flexDirection: 'row'}}>
+      <Box sx={{pt: 3, display: 'flex', flexDirection: 'row'}}>
         <Box sx={{mr: 3}}>
           <Button 
             variant="outlined"

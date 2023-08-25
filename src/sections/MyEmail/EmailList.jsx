@@ -88,7 +88,7 @@ function EmailList() {
                 <TableCell>{row.recipient}</TableCell>
                 <TableCell>{row.subject}</TableCell>
                 <TableCell>{row.body}</TableCell>
-                <TableCell>{new Date(row.sent_at).toLocaleString()}</TableCell>
+                <TableCell>{new Date(row.sent_at).toLocaleDateString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>

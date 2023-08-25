@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
+import Typography from '@mui/material/Typography';
 
 import { apiUrl } from '../../constants';
 
@@ -20,14 +20,12 @@ function CreateEmail({ data }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // payload to be sent to the API
     const payload = {
       recipient: recipient,
       subject: subject,
       body: body,
     };
 
-    // Making the API call using fetch
     fetch(`${apiUrl}/api/my_email/create/`, {
       method: "POST",
       headers: {
@@ -47,54 +45,62 @@ function CreateEmail({ data }) {
   };
 
   return (
-    <Box>
-      <Box sx={{ paddingTop: 2 }}>
-        <form onSubmit={handleSubmit}>
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Recipient"
-              fullWidth   // Take up full width
-              onChange={(e) => setRecipient(e.target.value)}
-              value={recipient}
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Subject"
-              fullWidth   // Take up full width
-              onChange={(e) => setSubject(e.target.value)}
-              value={subject}
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              multiline   // Enable multi-line
-              rows={10}    // Specify the initial number of rows
-              fullWidth   // Take up full width
-              label="Body"
-              variant="outlined"
-              onChange={(e) => setBody(e.target.value)}
-              value={body}
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <Button 
-              variant="contained"
-              type="submit"
-              disabled = {
-                recipient === '' 
-                || subject === '' 
-                || body === '' 
-              }
-            >
-              Send Email
-            </Button>
-          </Box>
-        </form>
+    <Box sx={{ pr: 5, pl: 2 }}>
+      <Box sx={{ mt: 2, mb: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Create Email
+        </Typography>
       </Box>
+
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ pb: 3 }}>
+          <TextField 
+            label="Recipient"
+            fullWidth
+            onChange={(e) => setRecipient(e.target.value)}
+            value={recipient}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pb: 3 }}>
+          <TextField 
+            label="Subject"
+            fullWidth
+            onChange={(e) => setSubject(e.target.value)}
+            value={subject}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pb: 3 }}>
+          <TextField 
+            multiline
+            rows={12}
+            fullWidth
+            label="Body"
+            variant="outlined"
+            onChange={(e) => setBody(e.target.value)}
+            value={body}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pt: 2 }}>
+          <Button 
+            variant="contained"
+            type="submit"
+            disabled = {
+              recipient === '' 
+              || subject === '' 
+              || body === '' 
+            }
+          >
+            Send Email
+          </Button>
+        </Box>
+      </form>
+
     </Box>
   );
 }

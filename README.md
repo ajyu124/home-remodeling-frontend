@@ -1,19 +1,24 @@
-## This is a backend application
+## This is a front-end web application
 
-developed in Python, Django, REST API, and SQLite.
+[Video demonstration of the application](https://youtu.be/fdcxK87FEHM)
 
-a backend application for a demo website for Home Remodeling Business.
+---
 
-Its corresponding front-end web application:
-[https://github.com/ajyu124/home-remodeling-frontend](https://github.com/ajyu124/home-remodeling-frontend)
+developed in JavaScript, ReactJS, HTML, CSS, and Material UI.
 
-[video of the demo website]()
+a demo website for Home Remodeling Business.
+
+This front-end application requires the corresponding backend application to be running first:
+[https://github.com/ajyu124/homeRemodelingBackend](https://github.com/ajyu124/homeRemodelingBackend)
+
+---
 
 To run the application in the development mode, 
 in the project directory:
 
-### `python manage.py runserver`
+`npm install`
+Install the dependencies specified in the project's package.json file. 
+Dependencies are external packages or libraries that a project relies on to function properly. 
 
-
-
-
+`npm start`
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.

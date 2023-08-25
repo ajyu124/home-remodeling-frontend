@@ -25,6 +25,7 @@ function EmailDetail() {
       });
   }, [email_id]);
 
+
   const [isConfirmationOpen, setConfirmationOpen] = useState(false);
   const handleConfirm = () => {
     fetch(`${apiUrl}/api/my_email/delete/${email_id}/`, {
@@ -41,6 +42,7 @@ function EmailDetail() {
   const handleClose = () => {
     setConfirmationOpen(false);
   };
+  
 
   return (
     <Box>
@@ -73,7 +75,7 @@ function EmailDetail() {
 
       <Box sx={{mt: 2}}>
         <Typography>
-          <strong>Sent at:</strong> 
+          <strong>Sent at: </strong> 
           {new Date(emailData.sent_at).toLocaleString()}
         </Typography>
       </Box>

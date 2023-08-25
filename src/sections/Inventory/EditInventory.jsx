@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
+import Typography from '@mui/material/Typography';
 
 import { apiUrl } from '../../constants';
 
@@ -52,7 +52,6 @@ function EditInventory() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // payload to be sent to the API
     const payload = {
       item: item,
       quantity: quantity,
@@ -60,7 +59,6 @@ function EditInventory() {
       category: category,
     };
 
-    // Making the API call using fetch
     fetch(`${apiUrl}/api/inventory/update/${inventory_id}/`, {
       method: "PUT",
       headers: {
@@ -79,69 +77,78 @@ function EditInventory() {
   };
 
   return (
-    <Box>
-      <Box sx={{ paddingTop: 2 }}>
-        <form onSubmit={handleSubmit}>
-
-          <Box sx={{ padding: 2 }}>
-            <InputLabel id="select-category-labelId">Select a category</InputLabel>
-            <Select
-              labelId="select-category-labelId"
-              value={category}
-              onChange={handleChange}
-              fullWidth
-            > 
-              {
-                inventoryCategoryListData.map(({id, description}) => (
-                  <MenuItem value={id} key={`category_${id}`}>{description}</MenuItem>
-                ))
-              }
-            </Select>
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Item"
-              fullWidth   // Take up full width
-              onChange={(e) => setItem(e.target.value)}
-              value={item}
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Quantity"
-              fullWidth   // Take up full width
-              onChange={(e) => setQuantity(e.target.value)}
-              value={quantity}
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <TextField 
-              label="Price per Unit"
-              fullWidth   // Take up full width
-              onChange={(e) => setPricePerUnit(e.target.value)}
-              value={pricePerUnit}
-            />
-          </Box>
-
-          <Box sx={{ padding: 2 }}>
-            <Button 
-              variant="contained"
-              type="submit"
-              disabled = {
-                category === '' 
-                || item === '' 
-                || quantity === '' 
-                || pricePerUnit === ''
-              }
-            >
-              Update Inventory
-            </Button>
-          </Box>
-        </form>
+    <Box sx={{ pr: 5, pl: 2 }}>
+      <Box sx={{mt: 2, mb: 3}}>
+        <Typography variant="h6" gutterBottom>
+          Inventory Detail
+        </Typography>
       </Box>
+
+      <form onSubmit={handleSubmit}>
+
+        <Box sx={{ pb: 5 }}>
+          <InputLabel id="select-category-labelId">Select a category</InputLabel>
+          <Select
+            labelId="select-category-labelId"
+            value={category}
+            onChange={handleChange}
+            fullWidth
+            size="small"
+          > 
+            {
+              inventoryCategoryListData.map(({id, description}) => (
+                <MenuItem value={id} key={`category_${id}`}>{description}</MenuItem>
+              ))
+            }
+          </Select>
+        </Box>
+
+        <Box sx={{ pb: 3 }}>
+          <TextField 
+            label="Item"
+            fullWidth
+            onChange={(e) => setItem(e.target.value)}
+            value={item}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pb: 3 }}>
+          <TextField 
+            label="Quantity"
+            fullWidth
+            onChange={(e) => setQuantity(e.target.value)}
+            value={quantity}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pb: 3 }}>
+          <TextField 
+            label="Price per Unit"
+            fullWidth
+            onChange={(e) => setPricePerUnit(e.target.value)}
+            value={pricePerUnit}
+            size="small"
+          />
+        </Box>
+
+        <Box sx={{ pt: 2 }}>
+          <Button 
+            variant="contained"
+            type="submit"
+            disabled = {
+              category === '' 
+              || item === '' 
+              || quantity === '' 
+              || pricePerUnit === ''
+            }
+          >
+            Update Inventory
+          </Button>
+        </Box>
+      </form>
+
     </Box>
   );
 }

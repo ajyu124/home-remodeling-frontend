@@ -132,9 +132,6 @@ function ShippingDetail() {
           />
 
         </Box>
-
-         
-
       </Box>
     </Box>
   );
